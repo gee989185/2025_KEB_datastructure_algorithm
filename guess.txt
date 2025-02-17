@@ -1,0 +1,14 @@
+Guess number is 50
+50 is lower. Chance left : 5
+Guess number is 75
+75 is bigger. Chance left : 4
+Guess number is 62
+62 is bigger. Chance left : 3
+Guess number is 56
+56 is bigger. Chance left : 2
+Guess number is 53
+53 is lower. Chance left : 1
+Guess number is 54
+54 is lower. Chance left : 0
+Guess number is 55
+You lost. Answer is 55

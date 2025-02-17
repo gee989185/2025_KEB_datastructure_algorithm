@@ -1,43 +1,37 @@
-memo = dict()
+# Assignment day06
+# v1.5) https://github.com/inhadeepblue/2024_KEB_datastructure_algorithm 의
+# v0.7 guess number 예제를 자동화하고 로그파일(guess.txt)을 남기도록 코드를 수정하시오.
+# 단, 해당 프로그램이 로그시간을 갖도록 한다
+import random
 
-def fibonacci_recursion(n) -> int:
-    """
-    피보나치 수 계산함수 (재귀함수 버전)
-    :param n:
-    :return: 피보나치 계산 결과 값
-    """
-    if n <= 0:
-        return 0
-    elif n == 1:
-        return 1
+def guess_number(low, high, answer, chance) -> int:
+    mid =  (low+high) // 2
+    print(f'Guess number is {mid}')
+    fp.write(f'Guess number is {mid}\n')
+    while chance != 0:
+        if mid == answer:
+            print(f'You win. Answer is {answer}')
+            fp.write(f'You win. Answer is {answer}\n')
+            return
+        elif mid > answer:
+            chance = chance - 1
+            print(f'{mid} is bigger. Chance left : {chance}')
+            fp.write(f'{mid} is bigger. Chance left : {chance}\n')
+            return guess_number(low, mid-1, answer, chance)
+        else:
+            chance = chance - 1
+            print(f'{mid} is lower. Chance left : {chance}')
+            fp.write(f'{mid} is lower. Chance left : {chance}\n')
+            return guess_number(mid+1, high, answer, chance)
     else:
-        return fibonacci_recursion(n-2) + fibonacci_recursion(n-1)
+        print(f'You lost. Answer is {answer}')
+        fp.write(f'You lost. Answer is {answer}')
 
 
-def fibonacci_loop(n) -> int:
-    """
-    피보나치 수 계산함수 (반복문 버전)
-    :param n:
-    :return: 피보나치 계산 결과 값
-    """
-    n_list=[0 ,1]
-    for i in range(n+1):
-        n_list.append(n_list[i] + n_list[i + 1])
-
-    return n_list[n]
-
-
-def fibonacci_memo(n) -> int:
-    if n in memo:  # 딕셔너리에 이미 계산된 결과가 있으면 그 값을 리턴
-        return memo[n]
-    elif n <= 1:  # 0이나 1이 오면 그 값을 바로 리턴
-        return n
-    else:
-        memo[n] = fibonacci_memo(n-2) + fibonacci_memo(n-1)  # 딕셔너리에 계산된 결과 값이 없을 경우 딕셔너리에 추가
-        return memo[n]
-
-
-n = int(input())
-print(fibonacci_loop(n))
-print(fibonacci_recursion(n))
-print(fibonacci_memo(n))
+if __name__ == "__main__":
+    low = 1
+    high = 100
+    chance = 6
+    answer = random.randint(low, high)
+    with open('guess.txt', 'w') as fp:
+        guess_number(low, high, answer, chance)
