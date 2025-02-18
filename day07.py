@@ -1,23 +1,14 @@
-class Stack:
-    def __init__(self):
-        self.items = list()     # init 이후에 무조건 self
+def a(i):
+    j = 9
+    print(i, j)
 
-    def push(self, data):
-        self.items.append(data)
+def b(k):
+    a(1)
+    print(k)
 
-    def pop(self):
-        return self.items.pop()
+def main():
+    print("start")
+    b(3)
 
-    def size(self):
-        return len(self.items)
-
-    def peek(self):
-        return self.items[-1]
-
-s1 = Stack()
-s1.push(-9)
-s1.push(11)
-s1.push(977)
-print(s1.pop())
-print(s1.peek())
-print(s1.peek())
+if __name__ == "__main__":
+    main()
