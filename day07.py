@@ -41,5 +41,6 @@ if __name__ == "__main__":
     q.enqueue(-11)
     q.enqueue(8)
     print(f'q.size: {q.size()}')
-    print(f'q.dequeue: {q.dequeue()}') # return있음
+    for i in range(q.size()):
+        print(f'q.dequeue: {q.dequeue()}') # return있음
     print(f'q.size: {q.size()}')
