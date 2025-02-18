@@ -1,3 +1,6 @@
+import random
+
+
 class Node:
     def __init__(self, data, next=None):
         self.data = data
@@ -25,6 +28,24 @@ class LinkedList:
                 current = current.next
         return False
 
+    def remove(self, target):
+        # remove head node
+        if self.head.data == target:    # !
+            self.head = self.head.next  # head update
+            #print("선두 노드 삭제")
+            return
+
+        # remove not head node(remove other node)
+        current = self.head
+        previous = None
+        while current:
+            if current.data == target:
+                previous.next = current.next
+                break  # !
+            else: # move
+                previous = current
+                current = current.next
+
 
     def __str__(self):
         node = self.head
@@ -41,5 +62,14 @@ if __name__ == "__main__":
     l.append(-11)
     l.append(8)
     print(l)
-    print(l.search(999))
-    print(l.search(-11))
+    l.remove(-11)
+    print(l)
+    # l = LinkedList()
+    # i = 0
+    # while i < 20:
+    #     n = random.randint(1, 20)
+    #     l.append(n)
+    #     print(n, end=' ')
+    #     i = i + 1
+    # #print(l)
+    # print(l.search(10))
