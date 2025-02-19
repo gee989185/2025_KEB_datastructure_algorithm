@@ -1,50 +1,30 @@
-class TreeNode:
-	def __init__(self):
-		self.left = None
-		self.data = None
-		self.right = None
+def dfs(g, i, visited):
+    visited[i] = 1
+    print(chr(ord('A')+i), end=' ')
+    for j in range(len(g)):
+        if g[i][j] == 1 and not visited[j]:     # 연결이 되어 있으면서 / 동시에 방문한 적이 없는
 
+            dfs(g, j, visited)
 
-if __name__ == "__main__":
-    groups = ['블랙핑크', '레드벨벳', '마마무', '에이핑크', '걸스데이', '트와이스']
-    root = None
+graph = [
+    [0, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [1, 1, 0, 1, 1],
+    [1, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0]
+]
 
-    node = TreeNode()
-    node.data = groups[0]
-    root = node
+visited = [0] * len(graph)
+dfs(graph, 0, visited)
+# if g[i][j] == "1" and not visited[j]
+# i = 0: A C B D E
+# i = 1: B C A D E
+# i = 2: C A D B E
+# i = 3: D A C B E
+# i = 4: E C A D B
 
-    for group in groups[1:]:
-        node = TreeNode()
-        node.data = group
-        current = root
-        while True:
-            if group < current.data:
-                if current.left is None:
-                    current.left = node
-                    break
-                current = current.left          # move
-            else:
-                if group > current.data:
-                    if current.right is None:
-                        current.right = node
-                        break
-                current = current.right         # move
-    print("BST 구성 완료")
-
-    find_group = input()
-
-    current =root
-    while True:
-        if find_group == current.data:
-            print(f"{find_group}을(를) 찾았습니다.")
-            break
-        elif find_group < current.data:
-            if current.left is None:
-                print(f"{find_group}가 존재하지 않습니다.")
-                break
-            current = current.left
-        else:
-            if current.right is None:
-                print(f"{find_group}가 존재하지 않습니다.")
-                break
-            current = current.right
+# if g[i][j] == "0" and not visited[j]
+# i = 0: A B D E
+# i = 1: B A E D
+# i = 2: C
+# i = 3: D B A E
