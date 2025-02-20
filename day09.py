@@ -1,67 +1,53 @@
+# Assignment
+# v4.2) v4.1 코드의 find_vertex 함수에 BFS를 적용하시오.
+from collections import deque
+
 class Graph:
 	def __init__(self, size) :
 		self.SIZE = size
 		self.graph = [[0 for _ in range(size)] for _ in range(size)]
 
-# 인접 행렬 출력
+
 def print_graph(g) :
-    print(' ', end = ' ')
+    print(' ', end=' ')
     for v in range(g.SIZE) :
-        print(name_ary[v], end =' ')
+        print(name_ary[v], end=' ')
     print()
     for row in range(g.SIZE) :
-        print(name_ary[row], end =' ')
+        print(name_ary[row], end=' ')
         for col in range(g.SIZE) :
-            #print("%2d" % g.graph[row][col], end = ' ')
             print(f"{g.graph[row][col]:2}", end=' ')
         print()
     print()
 
-# (DFS)깊이 우선 탐색
-def dfs(g, current, find_vtx, visited):
-    visited.append(current)     # 방문한 노드 리스트에 추가
 
-    if current == find_vtx:
-        return True # 찾고자 하는 정점 발견
-
-    for vertex in range(g.SIZE):
-        if g.graph[current][vertex] != 0 and vertex not in visited:
-            if dfs(g, vertex, find_vtx, visited):
-                return True
-    return False
-# 두 노드가 연결되어있는가(current == 0 > 춘천)
+"""
+def bfs(g, i, visited):
+    queue = deque([i])
+    visited[i] = 1
+    while queue:
+        #print(visited)
+        i = queue.popleft()
+        print(chr(ord('A') + i), end=' ')
+        for j in range(len(g)):
+            if g[i][j] == 1 and not visited[j]:
+                queue.append(j)
+                visited[j] = 1
+"""
 def find_vertex(g, find_vtx):
-    visited = []
-    return dfs(g, 0 , find_vtx, visited)
-
-
-# def find_vertex(g, find_vtx) -> bool:
-# 	stack = []
-# 	visited_ary = []
-#
-# 	current = 0
-# 	stack.append(current)
-# 	visited_ary.append(current)
-#
-# 	while len(stack) != 0:
-# 		next = None
-# 		for vertex in range(g_size) :
-# 			if g.graph[current][vertex] != 0 :
-# 				if vertex in visited_ary :
-# 					pass
-# 				else :
-# 					next = vertex
-# 					break
-# 		if next is not None:
-# 			current = next
-# 			stack.append(current)
-# 			visited_ary.append(current)
-# 		else :
-# 			current = stack.pop()
-# 	if find_vtx in visited_ary :
-# 		return True
-# 	else :
-# 		return False
+    visited = list()
+    queue = deque([0])
+    while queue:
+        current = queue.popleft()
+        if current in visited:
+            continue
+        visited.append(current)
+        if current == find_vtx:
+            return True
+        for vertex in range(g.SIZE):
+            if g.graph[current][vertex] != 0 and vertex not in visited:
+                queue.append(vertex)
+    return False
 
 
 G1 = None
@@ -72,7 +58,7 @@ g_size = 6
 G1 = Graph(g_size)
 G1.graph[춘천][서울] = 10; G1.graph[춘천][속초] = 15
 G1.graph[서울][춘천] = 10; G1.graph[서울][속초] = 40; G1.graph[서울][대전] = 11; G1.graph[서울][광주] = 50
-G1.graph[속초][춘천] = 15; G1.graph[속초][서울] = 4 0; G1.graph[속초][대전] = 12
+G1.graph[속초][춘천] = 15; G1.graph[속초][서울] = 40; G1.graph[속초][대전] = 12
 G1.graph[대전][서울] = 11; G1.graph[대전][속초] = 12; G1.graph[대전][광주] = 20; G1.graph[대전][부산] = 30
 G1.graph[광주][서울] = 50; G1.graph[광주][대전] = 20; G1.graph[광주][부산] = 25
 G1.graph[부산][대전] = 30; G1.graph[부산][광주] = 25
@@ -89,8 +75,9 @@ for i in range(g_size) :
 print(edge_ary, len(edge_ary))
 
 # 가중치 순으로 목록 정렬 (내림차순)
-from operator import itemgetter
-edge_ary = sorted(edge_ary, key = itemgetter(0), reverse = True)
+# from operator import itemgetter
+# edge_ary = sorted(edge_ary, key = itemgetter(0), reverse = True)
+edge_ary.sort(reverse=True)
 
 print(edge_ary, len(edge_ary))
 
@@ -101,26 +88,23 @@ for i in range(0, len(edge_ary), 2) :
 
 print(new_ary, len(new_ary))
 
-# 최소 신장 트리(MST): 가장 비용이 높은 간선부터 제거
 index = 0
 while len(new_ary) > g_size - 1:	# 간선의 개수가 '정점 개수-1'일 때까지 반복
-	start = new_ary[index][1]
-	end = new_ary[index][2]
-	saveCost = new_ary[index][0]
+    start = new_ary[index][1]
+    end = new_ary[index][2]
+    save_cost = new_ary[index][0]
 
-    # 간선 제거
-	G1.graph[start][end] = 0
-	G1.graph[end][start] = 0
+    G1.graph[start][end] = 0
+    G1.graph[end][start] = 0
 
-    # 여전히 연결 그래프인지 확인
-	startYN = find_vertex(G1, start)
-	endYN = find_vertex(G1, end)
+    startYN = find_vertex(G1, start)
+    endYN = find_vertex(G1, end)
 
-	if startYN and endYN :
-		del new_ary[index]      # 연결이 유지되면 간선 삭제 확정
-	else :
-		G1.graph[start][end] = saveCost     #연결이 끊어지면 간선 복구
-		G1.graph[end][start] = saveCost
-		index += 1
+    if startYN and endYN :
+        del new_ary[index]
+    else:
+        G1.graph[start][end] = save_cost
+        G1.graph[end][start] = save_cost
+        index += 1
 
 print_graph(G1)
